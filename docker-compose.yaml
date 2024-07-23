@@ -1,0 +1,25 @@
+services:
+  database:
+    image: postgres
+    environment:
+      POSTGRES_DB: tasks
+      POSTGRES_USER: Mona
+      POSTGRES_PASSWORD: 42
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    environment:
+      POSTGRES_CONN_STR: "postgresql://Mona:42@database:5432/tasks?sslmode=disable"
+    depends_on:
+      - database
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/Homework16
+
+volumes:
+  db_data:
